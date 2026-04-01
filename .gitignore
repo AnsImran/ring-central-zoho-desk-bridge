@@ -26,6 +26,9 @@ bridge.db
 # Scratch / working folder (screenshots, temp .env, OAuth files)
 temp/
 
+# Teams app package (generated artifact)
+*.zip
+
 # IDE and tool config
 .claude/
 PLAN.md

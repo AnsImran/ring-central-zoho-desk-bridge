@@ -1,8 +1,0 @@
-.env
-bridge.db
-beetexting_refresh_token.txt
-beetexting_subscription_id.txt
-__pycache__/
-*.pyc
-*.pyo
-.DS_Store

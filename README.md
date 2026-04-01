@@ -132,11 +132,12 @@ The `@rc-zd-teams-bridge` prefix is automatically stripped before the SMS is sen
 | `src/beetexting_send_sms.py` | Send SMS via BEEtexting API |
 | `src/beetexting_subscribe.py` | Manage BEEtexting webhook subscriptions |
 | `static/create_ticket.html` | Task Module UI |
-| `temp/manifest.json` | Teams app manifest source |
-| `temp/rc-zd-teams-bridge.zip` | Teams app package (upload this to Admin Center) |
+| `teams_manifest/manifest.json` | Teams app manifest source (replace YOUR_DOMAIN before packaging) |
 | `bridge.db` | SQLite database (auto-created, gitignored) |
 | `beetexting_subscription_id.txt` | Current BEEtexting webhook subscription ID |
-| `deploy/` | Self-contained Docker package for EC2 deployment |
+| `Dockerfile` | Docker image definition |
+| `docker-compose.yml` | Orchestrates app + nginx + certbot |
+| `nginx/default.conf` | Reverse proxy config (replace YOUR_DOMAIN before deploy) |
 
 ---
 
@@ -221,8 +222,8 @@ uv run python src/beetexting_subscribe.py --create --webhook-url "https://<new-u
 ```
 
 **4. Update Teams app manifest and re-upload:**
-- Edit `temp/manifest.json`: update all URLs and bump `version`
-- Repackage: `python -c "import zipfile; z=zipfile.ZipFile('temp/rc-zd-teams-bridge.zip','w'); [z.write(f'temp/{f}',f) for f in ['manifest.json','color.png','outline.png']]"`
+- Edit `teams_manifest/manifest.json`: update `validDomains` and developer URLs, bump `version`
+- Repackage: `cd teams_manifest && zip ../rc-zd-teams-bridge.zip manifest.json color.png outline.png && cd ..`
 - Teams Admin Center → Manage apps → `rc-zd-teams-bridge` → Upload file → upload new zip
 
 **5. Restart the server** to pick up the new `.env`.
@@ -272,31 +273,25 @@ Uses **`BotFrameworkAdapter`** (not `CloudAdapter`) because `CloudAdapter.create
 
 ---
 
-## Deployment Package
+## EC2 Deployment
 
-The `deploy/` folder is a self-contained Docker package for EC2:
+This repo IS the deployable package — no separate folder needed. Docker infrastructure files are at root:
 
 ```
-deploy/
-├── src/                  ← all source files
-├── static/               ← HTML pages
-├── teams_manifest/       ← manifest.json + icons
-├── Dockerfile
-├── docker-compose.yml    ← app + nginx + certbot services
-├── nginx/default.conf    ← reverse proxy config
-├── requirements.txt
-├── .env.example
-└── README.md             ← EC2 deploy runbook
+Dockerfile
+docker-compose.yml
+nginx/default.conf        ← replace YOUR_DOMAIN before deploy
+requirements.txt
+.env.example              ← copy to .env and fill in values
+teams_manifest/           ← replace YOUR_DOMAIN in manifest.json before packaging
 ```
 
 To deploy to EC2 (54.153.64.137):
 1. Point your domain's DNS A record at `54.153.64.137`
-2. Copy `deploy/` to EC2, fill in `.env`, run certbot for SSL
-3. `docker compose up -d`
-4. Update BEEtexting webhook subscription to new permanent URL (one final time)
-5. Update Teams manifest with permanent domain, upload to Admin Center (one final time)
-
-See `deploy/README.md` for the full step-by-step runbook.
+2. Clone this repo on EC2, fill in `.env`, replace `YOUR_DOMAIN` in nginx config and manifest
+3. Run certbot for SSL, then `docker compose up -d`
+4. Update BEEtexting webhook subscription to permanent URL (one final time)
+5. Package and upload Teams manifest with permanent domain (one final time — never again)
 
 ---
 
