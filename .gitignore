@@ -1,0 +1,31 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Secrets / tokens
+.env
+access_token.txt
+credentials/
+beetexting_refresh_token.txt
+beetexting_subscription_id.txt
+
+# Generated data files (may contain PII/phone numbers)
+numbers.json
+whoami.json
+
+# Runtime data
+bridge.db
+
+# Scratch / working folder (screenshots, temp .env, OAuth files)
+temp/
+
+# IDE and tool config
+.claude/
+PLAN.md
