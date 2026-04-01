@@ -41,64 +41,16 @@ This project bridges customer SMS conversations (BEEtexting) into Microsoft Team
 
 ## Account & Infrastructure Map
 
-This section documents every account and resource involved so a new engineer can orient quickly.
+All account IDs, resource IDs, phone numbers, and infrastructure details are in `credentials/accounts.md` (gitignored — never committed).
 
-### Azure Bot
+Resources involved:
+- **Azure Bot**: `rc-zd-teams-bridge-bot-ans-global` (portal.azure.com, personal account)
+- **Teams App**: `rc-zd-teams-bridge` v1.0.3, installed in Webzter IT Solutions org
+- **BEEtexting**: app.beetexting.com (webhook subscription ID in `beetexting_subscription_id.txt`)
+- **Zoho Desk**: desk.zoho.com (auth via refresh token in `.env`)
+- **EC2**: t3.medium Ubuntu 24.04 LTS — Elastic IP in `credentials/accounts.md`
 
-- **Resource name**: `rc-zd-teams-bridge-bot-ans-global`
-- **Azure subscription**: personal account `ansimran18@gmail.com`
-- **Portal**: portal.azure.com (log in with `ansimran18@gmail.com`)
-- **Bot App ID**: `9185bafc-d753-4c30-935c-f6bb70449baf`
-- **App tenant**: `eaa017ab-5443-42df-a2fa-8cf876069884` (Webzter IT Solutions org tenant)
-- **Type**: Single Tenant
-- **Messaging endpoint**: `https://<tunnel-url>/api/messages` (must be updated when tunnel URL changes)
-- **Channels connected**: Direct Line (Healthy), Microsoft Teams (Healthy), Web Chat (Healthy)
-- **Pricing**: paid tier
-
-### Microsoft Teams App
-
-- **App name**: `rc-zd-teams-bridge`
-- **App ID**: `3edf2a62-fd53-49d0-897e-b62340f88286`
-- **Current version**: `1.0.3`
-- **Published to**: Webzter IT Solutions org app catalog via Teams Admin Center
-- **Org tenant**: `eaa017ab-5443-42df-a2fa-8cf876069884`
-- **Teams Admin Center**: admin.teams.microsoft.com (log in with org admin account)
-- **Installed in**: "test channel beetexting teams integration" inside Webzter Support Team
-- **Channel ID**: `19:CisU706ORy7BoXfKktwXkK32KdPv-i5MnszLs_Ro-t01@thread.tacv2`
-- **App package**: `temp/rc-zd-teams-bridge.zip` (manifest + color.png + outline.png)
-- **Developer Portal**: developer.microsoft.com/en-us/microsoft-teams
-
-### Azure App Registration (Bot Identity)
-
-- **Display name**: `rc-zd-teams-bridge`
-- **App (client) ID**: `9185bafc-d753-4c30-935c-f6bb70449baf`
-- **Object ID**: `c6bf4637-97c5-44d6-a144-07d03ac35c0d`
-- **Tenant**: Webzter IT Solutions (`eaa017ab-5443-42df-a2fa-8cf876069884`)
-- **Client secret ID**: `480b484f-8cb3-4be4-be89-3042bda54aec`
-- **Secret expires**: 2028-03-27
-
-### BEEtexting
-
-- **App**: app.beetexting.com
-- **Main company number**: (949) 424-8180 / `+19494248180`
-- **Marko's number** (test contact): (949) 313-7724 / `+19493137724`
-- **Webhook subscription ID**: `69cba5d082142b2f2d8e004c` (saved in `beetexting_subscription_id.txt`)
-- **Webhook URL**: `https://<tunnel-url>/webhook` (must be recreated when tunnel URL changes)
-- **Subscription expiry**: 2056-03-30 (90-day setting, effectively permanent)
-
-### Zoho Desk
-
-- **Org ID**: `898106677`
-- **Department ID**: `1166045000000006907`
-- **Base URL**: https://desk.zoho.com
-- **Auth**: OAuth refresh token (stored in `.env`)
-
-### EC2 Instance (permanent deployment — in progress)
-
-- **Instance**: t3.medium, Ubuntu 24.04 LTS
-- **Elastic IP**: `54.153.64.137` (permanent — does not change on stop/start)
-- **Key pair**: `bridge-ec2.pem` (stored in `credentials/`, gitignored)
-- **Status**: provisioned, awaiting domain DNS A record + Docker deploy
+**Messaging endpoint** (update when URL changes): `https://<url>/api/messages` in Azure Bot → Configuration.
 
 Once EC2 is live, the Cloudflare tunnel and all its URL churn goes away permanently.
 
