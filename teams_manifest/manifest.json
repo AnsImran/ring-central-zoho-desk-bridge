@@ -8,9 +8,9 @@
   },
   "developer": {
     "name": "Webzter I.T. Solutions",
-    "websiteUrl": "https://YOUR_DOMAIN",
-    "privacyUrl": "https://YOUR_DOMAIN/static/privacy.html",
-    "termsOfUseUrl": "https://YOUR_DOMAIN/static/terms.html"
+    "websiteUrl": "https://bridge.webzter.support",
+    "privacyUrl": "https://bridge.webzter.support/static/privacy.html",
+    "termsOfUseUrl": "https://bridge.webzter.support/static/terms.html"
   },
   "description": {
     "short": "Bridge BEEtexting SMS into Teams and create Zoho Desk tickets.",
@@ -41,6 +41,6 @@
       "supportsFiles": true
     }
   ],
-  "validDomains": ["YOUR_DOMAIN"],
+  "validDomains": ["bridge.webzter.support"],
   "supportsChannelFeatures": "tier1"
 }
