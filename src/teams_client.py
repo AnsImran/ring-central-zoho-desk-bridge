@@ -132,10 +132,13 @@ class TeamsClient:
         self.save_service_url(activity.service_url or "")
 
     def _get_service_url(self) -> str:
-        service_url = message_store.get_bot_state("service_url", db_path=self.db_path)
+        service_url = (
+            message_store.get_bot_state("service_url", db_path=self.db_path)
+            or os.getenv("TEAMS_SERVICE_URL", "")
+        )
         if not service_url:
             raise TeamsConfigError(
-                "Teams service_url is not set. Capture it from incoming /api/messages activity and store in bot_state key 'service_url'."
+                "Teams service_url is not set. Set TEAMS_SERVICE_URL in .env or wait for first /api/messages activity."
             )
         return service_url
 
