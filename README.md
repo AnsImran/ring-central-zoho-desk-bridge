@@ -4,7 +4,7 @@ This project bridges customer SMS conversations (BEEtexting) into Microsoft Team
 - Reply from Teams back to SMS (using `@rc-zd-teams-bridge` mention in the channel thread)
 - Create Zoho Desk tickets from selected conversation ranges
 
-## Current Status (April 1, 2026)
+## Current Status (April 1, 2026
 
 ### WORKING end-to-end as of March 31, 2026
 
