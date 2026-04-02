@@ -116,13 +116,13 @@ def main():
 
 def get_access_token_from_refresh() -> str:
     """Use stored refresh token to get a fresh access token (no browser needed)."""
-    if not TOKEN_FILE.exists():
-        sys.exit(f"No refresh token found. Run beetexting_user_auth.py first.")
+    refresh_token = os.getenv("BEETEXTING_REFRESH_TOKEN") or (TOKEN_FILE.read_text().strip() if TOKEN_FILE.exists() else None)
+    if not refresh_token:
+        sys.exit("No refresh token found. Set BEETEXTING_REFRESH_TOKEN in .env or run beetexting_user_auth.py first.")
 
     client_id     = os.getenv("BEETEXTING_USER_CLIENT_ID")
     client_secret = os.getenv("BEETEXTING_USER_CLIENT_SECRET")
     credentials   = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
-    refresh_token = TOKEN_FILE.read_text().strip()
 
     response = requests.post(
         TOKEN_URL,
